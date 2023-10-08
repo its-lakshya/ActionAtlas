@@ -1,18 +1,33 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import './App.css';
 import InputField from './components/InputField';
 import { useState } from 'react';
 import { ToDo } from './model';
+import List from './components/List';
 
-const  App:React.FC = () =>  {
+const App:React.FC = () =>  {
 
   const [todo, setTodo] = useState<string>("")
   const [todos, setTodos] = useState<ToDo[]>([]);
 
+  const handleAdd = (e:React.FormEvent) => {
+    e.preventDefault();
+
+    if(todo){
+      setTodos([...todos, {id:Date.now(), todo:todo, isDone:false}])
+      setTodo("");
+    }
+  }
+
   return (
     <div className="flex flex-col w-full h-screen items-center my-10 mx-10 max-sm:my-5 max-sm:mx-5 gap-y-10">
       <div className='font-semibold text-3xl'>ActionAtlas</div>
-      <InputField todo={todo} setTodo={setTodo}/>
+      <InputField todo={todo} setTodo={setTodo} handleAdd={handleAdd}/>
+      {todos.map((todo) => {
+        console.log(todo)
+        return(
+        <List key={todo.id} id={todo.id} todo={todo.todo} isDone={todo.isDone}/>        
+      )})}
     </div>
   );
 }
