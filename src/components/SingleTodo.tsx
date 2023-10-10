@@ -10,13 +10,23 @@ interface Props {
 }
 
 const SingleTodo = ({ todo, todos, setTodos }: Props) => {
+
   const handleDone = (id: number) => {
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
       )
-    );
+    ); 
   };
+  
+  const handleDelete = (id: number) => {
+    setTodos(
+      todos.filter((todo) =>
+        todo.id !== id 
+      )
+    ); 
+  }   
+
   return (
     <form className="w-96 h-14 overflow-clip bg-[#CD7672] border rounded-3xl flex items-center justify-between px-4 text-lg text-white font-medium">
       {todo.isDone ? <s>{todo.todo}</s> : <span>{todo.todo}</span>}
@@ -24,7 +34,9 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
         <span>
           <AiFillEdit />
         </span>
-        <span>
+        <span
+        onClick={()=> handleDelete(todo.id)}
+        >
           <AiFillDelete />
         </span>
         <span onClick={() => handleDone(todo.id)}>
